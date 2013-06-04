@@ -1,1 +1,13 @@
-This file was created by IntelliJ IDEA 12.1.3 for binding GitHub repository
+EnchantAPI
+===========
+
+Gives developers the ability to add custom enchantments to the plugin
+
+Compilation
+-----------
+
+We use maven to handle our dependencies.
+
+- Install Maven
+- Check out this repository.
+- Run ```mvn clean package```
