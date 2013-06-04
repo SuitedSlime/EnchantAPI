@@ -23,6 +23,17 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <repository>
+            <id>repo</id>
+            <url>https://github.com/SuitedSlime/EnchantAPI/raw/mater/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshot-repo</id>
+            <url>https://github.com/SuitedSlime/EnchantAPI/raw/mater/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 
     <dependencies>
         <dependency>
