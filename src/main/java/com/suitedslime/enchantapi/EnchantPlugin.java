@@ -17,4 +17,5 @@ public class EnchantPlugin extends JavaPlugin {
     public void registerEnchantments() {
 
     }
+
 }
