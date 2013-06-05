@@ -1,0 +1,14 @@
+name: EnchantAPI
+main: com.suitedslime.enchantapi.EnchantAPI
+version: 1.0
+commands:
+    enchantlist:
+        description: Lists all the registered custom enchants
+        usage: /enchantlist
+        aliases: enchantapi
+        permission: EnchantAPI.*
+        permission-message: You don't have permission to do that!
+permissions:
+    EnchantAPI.*:
+        description: Access for the /echantlist commands
+        default: true

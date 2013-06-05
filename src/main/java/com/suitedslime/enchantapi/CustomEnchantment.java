@@ -34,6 +34,10 @@ public abstract class CustomEnchantment {
         this.naturalItems = naturalItems;
     }
 
+    public String name() {
+        return this.enchantName;
+    }
+
     public int getEnchantmentLevel(int expLevel) {
         return 0;
     }
@@ -46,8 +50,8 @@ public abstract class CustomEnchantment {
     }
 
     public ItemStack addToItem(ItemStack item, int enchantLevel) {
-        ItemMeta itemMeta = item.getItemMeta();
-        List metaLore = itemMeta.getLore() == null ? new ArrayList() : itemMeta.getLore();
+        ItemMeta meta = item.getItemMeta();
+        List<String> metaLore = meta.getLore() == null ? new ArrayList() : meta.getLore();
 
         for (String lore : metaLore) {
             if (lore.contains(this.enchantName)) {
@@ -57,16 +61,39 @@ public abstract class CustomEnchantment {
                     int level = ERomanNumeral.getValueOf(pieces[(pieces.length - 1)]);
                     if (level != 0) {
                         if (level >= enchantLevel) return item;
-                        itemMeta.getLore().remove(lore);
+
+                        List newLore = meta.getLore();
+                        newLore.remove(lore);
+                        meta.setLore(newLore);
                         break;
                     }
                 }
             }
         }
-
         metaLore.add(0, ChatColor.GRAY + this.enchantName + " " + ERomanNumeral.numeralOf(enchantLevel));
-        itemMeta.setLore(metaLore);
-        item.setItemMeta(itemMeta);
+        meta.setLore(metaLore);
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public ItemStack removeFromItem(ItemStack item) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return item;
+        if (!meta.hasLore()) return item;
+        List<String> metaLore = meta.getLore();
+
+        for (String lore : metaLore)
+            if (lore.contains(this.enchantName)) {
+                String loreName = ENameParser.parseName(lore);
+                if ((loreName != null) &&
+                        (this.enchantName.equalsIgnoreCase(loreName))) {
+                    List newLore = meta.getLore();
+                    newLore.remove(lore);
+                    meta.setLore(newLore);
+                    item.setItemMeta(meta);
+                    return item;
+                }
+            }
         return item;
     }
 
@@ -84,6 +111,14 @@ public abstract class CustomEnchantment {
     }
 
     public void applyMiscEffect(Player player, int enchatLevel, PlayerInteractEvent event) {
+
+    }
+
+    public void applyEquipEffect(Player player, int enchantLevel) {
+
+    }
+
+    public void applyUnequipEfect(Player player, int enchantLevel) {
 
     }
 }
