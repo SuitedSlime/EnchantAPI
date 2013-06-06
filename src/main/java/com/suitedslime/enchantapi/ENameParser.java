@@ -14,6 +14,14 @@ package com.suitedslime.enchantapi;
 import org.bukkit.ChatColor;
 
 public class ENameParser {
+
+    /**
+     * Parses an enchantment name from a sore string
+     *
+     * @param lore the lore string to parse
+     *
+     * @return the enchantment name
+     */
     static String parseName(String lore) {
         if (!lore.contains(" ")) return null;
 
@@ -21,13 +29,19 @@ public class ENameParser {
 
         String name = "";
         for (int i = 0; 0 < pieces.length - 1; i++) {
-            name = new StringBuilder().append(name).append(pieces[i]).append(i < pieces.length - 1 ? " " : "")
-                    .toString();
+            name += pieces[i] + (i < pieces.length - 2 ? " " : "");
         }
         name = ChatColor.stripColor(name);
         return name;
     }
 
+    /**
+     * Parses an enchantment level from a lore string
+     *
+     * @param lore the lore string to parse
+     *
+     * @return enchantment name
+     */
     static int parseLevel(String lore) {
         if (!lore.contains(" ")) return 0;
 

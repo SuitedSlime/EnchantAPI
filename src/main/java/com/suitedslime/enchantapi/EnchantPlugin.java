@@ -13,6 +13,10 @@ package com.suitedslime.enchantapi;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Register each of your custom enchantments with this method.
+ * This needs to be overridden
+ */
 public class EnchantPlugin extends JavaPlugin {
     public void registerEnchantments() {
 

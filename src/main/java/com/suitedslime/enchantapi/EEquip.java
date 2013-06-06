@@ -20,29 +20,55 @@ import java.util.Hashtable;
 
 public class EEquip extends BukkitRunnable {
 
-    static Hashtable<String, ItemStack[]> equipment = new Hashtable();
+    // Player reference
     Player player;
 
+    /**
+     * Table of player data
+     */
+    static Hashtable<String, ItemStack[]> equipment = new Hashtable<String, ItemStack[]>();
+
+    /**
+     * Loads the equipment of the given player
+     *
+     * @param player player to load
+     */
     static void loadPlayer(Player player) {
         equipment.put(player.getName(), player.getEquipment().getArmorContents());
     }
 
+    /**
+     * Clears the data for the given player
+     *
+     * @param player player to clear
+     */
     static void clearPlayer(Player player) {
         equipment.remove(player.getName());
     }
 
+    /**
+     * Clears all player data
+     */
     static void clear() {
         equipment.clear();
     }
 
+    /**
+     * Constructor
+     *
+     * @param player player to re-evaluate
+     */
     public EEquip(Player player) {
         this.player = player;
     }
 
+    /**
+     * Performs checks for changes to player equipemtn
+     */
     public void run() {
         ItemStack[] equips = this.player.getEquipment().getArmorContents();
-        ItemStack[] previous = (ItemStack[])equipment.get(this.player.getName());
-        for (int i = 0; i <equips.length; i++) {
+        ItemStack[] previous = (ItemStack[]) equipment.get(this.player.getName());
+        for (int i = 0; i < equips.length; i++) {
             if (!equips[i].toString().equalsIgnoreCase(previous[i].toString())) {
                 doEquip(equips[i]);
                 doUnequip(previous[i]);
@@ -51,6 +77,11 @@ public class EEquip extends BukkitRunnable {
         equipment.put(this.player.getName(), equips);
     }
 
+    /**
+     * Applies the equip actions to the given item
+     *
+     * @param item the equipment that was just equipped
+     */
     private void doEquip(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
@@ -58,14 +89,19 @@ public class EEquip extends BukkitRunnable {
         for (String lore : meta.getLore()) {
             String name = ENameParser.parseName(lore);
             int level = ENameParser.parseLevel(lore);
-            if ((name != null) && (level != 0)) {
-                if (EnchantAPI.isRegistered(name)) {
-                    EnchantAPI.getEnchantment(name).applyEquipEffect(this.player, level);
-                }
+            if (name == null) continue;
+            if (level == 0) continue;
+            if (EnchantAPI.isRegistered(name)) {
+                EnchantAPI.getEnchantment(name).applyEquipEffect(player, level);
             }
         }
     }
 
+    /**
+     * Applies unequip actions to the given item
+     *
+     * @param item the equipment that was just unequipped
+     */
     private void doUnequip(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
@@ -73,10 +109,10 @@ public class EEquip extends BukkitRunnable {
         for (String lore : meta.getLore()) {
             String name = ENameParser.parseName(lore);
             int level = ENameParser.parseLevel(lore);
-            if ((name != null) && (level != 0)) {
-                if (EnchantAPI.isRegistered(name)) {
-                    EnchantAPI.getEnchantment(name).applyUnequipEfect(this.player, level);
-                }
+            if (name == null) continue;
+            if (level == 0) continue;
+            if (EnchantAPI.isRegistered(name)) {
+                EnchantAPI.getEnchantment(name).applyUnequipEfect(player, level);
             }
         }
     }
